@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>ByCashVault</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+
+<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.0/dist/index.umd.js"></script>
+
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+
+<style>
+
+body{
+background:linear-gradient(135deg,#0a0018,#140033,#05000f);
+color:white;
+font-family:system-ui;
+min-height:100vh;
+}
+
+.logoGlow{
+text-shadow:0 0 30px #a855f7;
+}
+
+.wallet{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(168,85,247,0.4);
+border-radius:16px;
+padding:16px;
+cursor:pointer;
+transition:.25s;
+text-align:center;
+font-size:14px;
+}
+
+.wallet:hover{
+transform:scale(1.05);
+background:rgba(168,85,247,0.15);
+box-shadow:0 0 20px #9333ea;
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.9);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:999;
+}
+
+.modalBox{
+background:#140033;
+border:1px solid #9333ea;
+padding:30px;
+border-radius:20px;
+max-width:500px;
+width:92%;
+}
+
+.connectBtn{
+background:linear-gradient(90deg,#7c3aed,#ec4899);
+padding:14px 40px;
+border-radius:999px;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="flex justify-between items-center p-6">
+
+<h1 class="text-3xl font-bold logoGlow">ByCashVault</h1>
+
+<button onclick="openModal()" class="connectBtn">
+Connect Wallet
+</button>
+
+</header>
+
+<section class="flex flex-col items-center justify-center text-center mt-28">
+
+<h2 class="text-5xl font-bold logoGlow mb-6">
+Web3 Access Portal
+</h2>
+
+<p class="text-purple-300">
+Secure wallet connection
+</p>
+
+<p id="address" class="mt-8"></p>
+
+</section>
+
+<div id="modal" class="modal">
+
+<div class="modalBox">
+
+<h2 class="text-xl text-center mb-6">Select Wallet</h2>
+
+<div class="grid grid-cols-3 gap-3">
+
+<div class="wallet" onclick="connectMetaMask()">MetaMask</div>
+<div class="wallet" onclick="connectWalletConnect()">Trust Wallet</div>
+<div class="wallet" onclick="connectWalletConnect()">Coinbase</div>
+<div class="wallet" onclick="connectWalletConnect()">OKX</div>
+<div class="wallet" onclick="connectWalletConnect()">Binance</div>
+<div class="wallet" onclick="connectWalletConnect()">Rabby</div>
+<div class="wallet" onclick="connectWalletConnect()">Rainbow</div>
+<div class="wallet" onclick="connectWalletConnect()">Ledger</div>
+<div class="wallet" onclick="connectWalletConnect()">Safe</div>
+<div class="wallet" onclick="connectWalletConnect()">TokenPocket</div>
+<div class="wallet" onclick="connectWalletConnect()">MathWallet</div>
+<div class="wallet" onclick="connectWalletConnect()">BitKeep</div>
+<div class="wallet" onclick="connectWalletConnect()">imToken</div>
+<div class="wallet" onclick="connectWalletConnect()">AlphaWallet</div>
+<div class="wallet" onclick="connectWalletConnect()">Zerion</div>
+<div class="wallet" onclick="connectWalletConnect()">Opera</div>
+<div class="wallet" onclick="connectWalletConnect()">Brave</div>
+<div class="wallet" onclick="connectWalletConnect()">Status</div>
+<div class="wallet" onclick="connectWalletConnect()">Frame</div>
+<div class="wallet" onclick="connectPhantom()">Phantom</div>
+
+</div>
+
+<button onclick="closeModal()" class="mt-6 w-full bg-red-600 p-3 rounded-xl">
+Close
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const PROJECT_ID="a4746ac803fafe7cecb476f789b0230d"
+
+
+
+function openModal(){
+document.getElementById("modal").style.display="flex"
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none"
+}
+
+
+
+async function connectMetaMask(){
+
+if(!window.ethereum){
+
+if(/Android|iPhone/.test(navigator.userAgent)){
+window.location.href="https://metamask.app.link/dapp/"+window.location.host
+return
+}
+
+alert("MetaMask не установлен")
+return
+}
+
+const provider=new ethers.BrowserProvider(window.ethereum)
+
+await provider.send("eth_requestAccounts",[])
+
+const signer=await provider.getSigner()
+
+const address=await signer.getAddress()
+
+document.getElementById("address").innerText="Connected: "+address
+
+closeModal()
+
+}
+
+
+
+async function connectWalletConnect(){
+
+const provider=
+await window.EthereumProvider.init({
+
+projectId:PROJECT_ID,
+
+chains:[1],
+
+showQrModal:true
+
+})
+
+await provider.enable()
+
+const ethersProvider=new ethers.BrowserProvider(provider)
+
+const signer=await ethersProvider.getSigner()
+
+const address=await signer.getAddress()
+
+document.getElementById("address").innerText="Connected: "+address
+
+closeModal()
+
+}
+
+
+
+async function connectPhantom(){
+
+const provider=window.phantom?.solana
+
+if(!provider){
+
+if(/Android|iPhone/.test(navigator.userAgent)){
+
+window.location.href="https://phantom.app/ul/browse/"+window.location.host
+
+return
+
+}
+
+alert("Phantom не установлен")
+return
+}
+
+const resp=await provider.connect()
+
+const address=resp.publicKey.toString()
+
+document.getElementById("address").innerText="Connected: "+address
+
+closeModal()
+
+}
+
+</script>
+
+</body>
+</html>
