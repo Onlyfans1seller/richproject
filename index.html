@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Web3 Test dApp</title>
+<title>ByCashVault Web3 Test</title>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
@@ -15,163 +15,196 @@
 body{
 margin:0;
 font-family:Arial;
-background:#0a0a0a;
+background:radial-gradient(circle at top,#1a0033,#000);
 color:white;
-display:flex;
-justify-content:center;
-align-items:center;
 height:100vh;
+display:flex;
 flex-direction:column;
+align-items:center;
+justify-content:center;
 }
 
 h1{
-font-size:40px;
-background:linear-gradient(90deg,#6c7cff,#00eaff);
+font-size:48px;
+background:linear-gradient(90deg,#8b5cf6,#22d3ee);
 -webkit-background-clip:text;
-color:transparent;
+-webkit-text-fill-color:transparent;
 }
 
 button{
-margin:10px;
-padding:15px 30px;
+padding:14px 28px;
 border:none;
 border-radius:12px;
-background:#1c1c1c;
+background:linear-gradient(90deg,#7c3aed,#22d3ee);
 color:white;
-font-size:16px;
+font-size:18px;
 cursor:pointer;
-transition:0.2s;
 }
 
 button:hover{
-background:#333;
+opacity:.9;
 }
 
-#walletInfo{
-margin-top:30px;
-font-size:15px;
+#walletModal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.8);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.modalBox{
+background:#111;
+padding:30px;
+border-radius:16px;
+width:320px;
 text-align:center;
 }
 
-.wallets{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-max-width:500px;
+.walletBtn{
+margin:10px 0;
+width:100%;
+}
+
+#info{
+margin-top:30px;
+font-size:16px;
+text-align:center;
 }
 
 </style>
 
 </head>
-
 <body>
 
-<h1>Web3 Test dApp</h1>
+<h1>ByCashVault</h1>
 
-<div class="wallets">
+<button onclick="openModal()">Connect Wallet</button>
 
-<button onclick="connectMetaMask()">MetaMask</button>
+<div id="info"></div>
 
-<button onclick="connectCoinbase()">Coinbase</button>
+<div id="walletModal">
 
-<button onclick="connectPhantom()">Phantom</button>
+<div class="modalBox">
+
+<h2>Select Wallet</h2>
+
+<button class="walletBtn" onclick="connectMetaMask()">MetaMask</button>
+
+<button class="walletBtn" onclick="connectPhantom()">Phantom</button>
+
+<button class="walletBtn" onclick="closeModal()">Cancel</button>
 
 </div>
 
-<div id="walletInfo"></div>
+</div>
 
 <script>
 
-let provider
-let signer
+function openModal(){
+document.getElementById("walletModal").style.display="flex"
+}
+
+function closeModal(){
+document.getElementById("walletModal").style.display="none"
+}
+
+function showInfo(text){
+document.getElementById("info").innerHTML=text
+}
 
 async function connectMetaMask(){
+
+closeModal()
 
 if(!window.ethereum){
 alert("MetaMask not installed")
 return
 }
 
-provider = new ethers.providers.Web3Provider(window.ethereum)
-
-await provider.send("eth_requestAccounts",[])
-
-signer = provider.getSigner()
-
-const address = await signer.getAddress()
-
-const balance = await provider.getBalance(address)
-
-const network = await provider.getNetwork()
-
-document.getElementById("walletInfo").innerHTML=
-
-`
-Address: ${address}<br>
-Balance: ${ethers.utils.formatEther(balance)} ETH<br>
-Network: ${network.name}
-`
-
-}
-
-async function connectCoinbase(){
-
-if(!window.ethereum){
-alert("Install Coinbase Wallet")
-return
-}
-
-provider = new ethers.providers.Web3Provider(window.ethereum)
-
-await provider.send("eth_requestAccounts",[])
-
-signer = provider.getSigner()
-
-const address = await signer.getAddress()
-
-document.getElementById("walletInfo").innerHTML=
-
-`
-Connected Coinbase Wallet<br>
-Address: ${address}
-`
-
-}
-
-async function connectPhantom(){
-
-const provider = window.solana
-
-if(!provider){
-alert("Install Phantom Wallet")
-return
-}
-
-if(provider.isPhantom){
-
 try{
 
-const resp = await provider.connect()
+const provider=new ethers.providers.Web3Provider(window.ethereum)
 
-const connection = new solanaWeb3.Connection(
-"https://api.mainnet-beta.solana.com"
-)
+await provider.send("eth_requestAccounts",[])
 
-const balance = await connection.getBalance(resp.publicKey)
+const signer=provider.getSigner()
 
-document.getElementById("walletInfo").innerHTML=
+const address=await signer.getAddress()
 
-`
-Phantom Connected<br>
-Address: ${resp.publicKey.toString()}<br>
-Balance: ${balance / solanaWeb3.LAMPORTS_PER_SOL} SOL
-`
+const balance=await provider.getBalance(address)
+
+const eth=ethers.utils.formatEther(balance)
+
+showInfo(`
+Connected: MetaMask<br>
+Address: ${address}<br>
+Balance: ${parseFloat(eth).toFixed(4)} ETH
+`)
 
 }catch(err){
 
 console.log(err)
 
+alert("Connection failed")
+
 }
+
+}
+
+async function connectPhantom(){
+
+closeModal()
+
+const provider=window.solana
+
+if(!provider){
+
+alert("Phantom not installed")
+
+return
+
+}
+
+if(!provider.isPhantom){
+
+alert("Phantom wallet not detected")
+
+return
+
+}
+
+try{
+
+const resp=await provider.connect()
+
+const address=resp.publicKey.toString()
+
+const connection=new solanaWeb3.Connection(
+"https://api.mainnet-beta.solana.com"
+)
+
+const balance=await connection.getBalance(
+new solanaWeb3.PublicKey(address)
+)
+
+const sol=(balance/1000000000).toFixed(4)
+
+showInfo(`
+Connected: Phantom<br>
+Address: ${address}<br>
+Balance: ${sol} SOL
+`)
+
+}catch(err){
+
+console.log(err)
+
+alert("Phantom connection failed")
 
 }
 
