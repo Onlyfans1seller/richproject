@@ -11,10 +11,12 @@ display:flex;
 justify-content:space-between;
 padding:20px 40px;
 align-items:center;
+position:relative;
+z-index:10;
 }
 
 .logo{
-font-size:24px;
+font-size:26px;
 font-weight:bold;
 color:#7c7cff;
 }
@@ -22,10 +24,11 @@ color:#7c7cff;
 button{
 background:linear-gradient(90deg,#7c7cff,#00f7ff);
 border:none;
-padding:12px 25px;
-border-radius:10px;
+padding:14px 28px;
+border-radius:12px;
 cursor:pointer;
 color:white;
+font-size:16px;
 }
 
 .bg{
@@ -35,7 +38,10 @@ height:100%;
 background:
 radial-gradient(circle at 20% 30%, #7b61ff33, transparent),
 radial-gradient(circle at 80% 70%, #00f7ff33, transparent);
-animation:move 10s infinite alternate;
+animation:move 8s infinite alternate;
+
+pointer-events:none;
+z-index:-1;
 }
 
 @keyframes move{
@@ -46,35 +52,40 @@ animation:move 10s infinite alternate;
 .modal{
 display:none;
 position:fixed;
+top:0;
+left:0;
 width:100%;
 height:100%;
-background:#000000dd;
+background:#000000cc;
 justify-content:center;
 align-items:center;
+z-index:1000;
 }
 
 .modal-box{
 background:#111;
 padding:30px;
-border-radius:15px;
+border-radius:20px;
+width:320px;
 }
 
 .wallet-grid{
 display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:20px;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:20px;
 }
 
 .wallet{
 background:#1b1b2a;
-padding:20px;
+padding:18px;
 text-align:center;
 border-radius:10px;
 cursor:pointer;
 }
 
 .wallet:hover{
-background:#2d2d44;
+background:#2e2e44;
 }
 
 .panel{
