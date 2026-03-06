@@ -1,206 +1,53 @@
 body{
-
-background: radial-gradient(circle,#12002e,#040010);
-
-color:white;
-
-font-family:system-ui;
-
 margin:0;
-
+font-family:Arial;
+background:#080810;
+color:white;
 }
-
 
 header{
-
 display:flex;
-
 justify-content:space-between;
-
-padding:25px;
-
+padding:20px 40px;
 }
-
 
 .logo{
-
-font-size:32px;
-
-font-weight:700;
-
-background:linear-gradient(90deg,#8b5cf6,#ec4899);
-
--webkit-background-clip:text;
-
-color:transparent;
-
-animation:glow 3s infinite alternate;
-
+font-size:24px;
+color:#00f7ff;
+font-weight:bold;
 }
 
+button{
 
-@keyframes glow{
-
-0%{text-shadow:0 0 10px #9333ea}
-
-100%{text-shadow:0 0 35px #ec4899}
-
-}
-
-
-.connect{
-
-background:linear-gradient(90deg,#7c3aed,#ec4899);
-
+background:#00f7ff;
 border:none;
-
-padding:14px 32px;
-
-border-radius:999px;
-
+padding:12px 25px;
+border-radius:10px;
 cursor:pointer;
 
-color:white;
-
-font-weight:600;
-
-transition:0.3s;
-
 }
-
-
-.connect:hover{
-
-transform:scale(1.1);
-
-box-shadow:0 0 20px #9333ea;
-
-}
-
 
 .hero{
 
 text-align:center;
-
 margin-top:120px;
 
 }
 
-
-.title{
+.hero h1{
 
 font-size:60px;
 
-margin-bottom:10px;
+background:linear-gradient(90deg,#00f7ff,#7b61ff);
+-webkit-background-clip:text;
+color:transparent;
 
 }
-
-
-.subtitle{
-
-color:#c084fc;
-
-}
-
-
-.modal{
-
-position:fixed;
-
-inset:0;
-
-display:none;
-
-align-items:center;
-
-justify-content:center;
-
-background:rgba(0,0,0,0.9);
-
-}
-
-
-.modalBox{
-
-background:#160033;
-
-padding:30px;
-
-border-radius:20px;
-
-width:90%;
-
-max-width:420px;
-
-border:1px solid #9333ea;
-
-animation:pop 0.4s;
-
-}
-
-
-@keyframes pop{
-
-from{transform:scale(.6);opacity:0}
-
-to{transform:scale(1);opacity:1}
-
-}
-
-
-.walletGrid{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:12px;
-
-margin-top:20px;
-
-}
-
 
 .wallet{
 
-background:rgba(255,255,255,0.05);
-
-padding:16px;
-
-border-radius:14px;
-
+margin-top:60px;
 text-align:center;
-
-cursor:pointer;
-
-transition:.2s;
-
-}
-
-
-.wallet:hover{
-
-transform:scale(1.05);
-
-box-shadow:0 0 15px #9333ea;
-
-}
-
-
-.close{
-
-margin-top:20px;
-
-width:100%;
-
-padding:12px;
-
-background:#7f1d1d;
-
-border:none;
-
-border-radius:10px;
-
-color:white;
+font-size:18px;
 
 }
