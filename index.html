@@ -1,63 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rich Project dApp</title>
-
-<link rel="stylesheet" href="style.css">
+<title>Web3 Test dApp</title>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#0a0a0a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+flex-direction:column;
+}
+
+h1{
+font-size:40px;
+background:linear-gradient(90deg,#6c7cff,#00eaff);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+button{
+margin:10px;
+padding:15px 30px;
+border:none;
+border-radius:12px;
+background:#1c1c1c;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+background:#333;
+}
+
+#walletInfo{
+margin-top:30px;
+font-size:15px;
+text-align:center;
+}
+
+.wallets{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+max-width:500px;
+}
+
+</style>
 
 </head>
 
 <body>
 
-<div class="background"></div>
+<h1>Web3 Test dApp</h1>
 
-<header>
+<div class="wallets">
 
-<h1>Rich Project</h1>
+<button onclick="connectMetaMask()">MetaMask</button>
 
-<button id="connectBtn">
-Connect Wallet
-</button>
+<button onclick="connectCoinbase()">Coinbase</button>
 
-</header>
-
-<div id="walletPopup" class="popup">
-
-<div class="popup-content">
-
-<h2>Select Wallet</h2>
-
-<button onclick="connectMetaMask()">
-MetaMask
-</button>
-
-<button onclick="connectPhantom()">
-Phantom
-</button>
-
-<button onclick="connectTrust()">
-Trust Wallet
-</button>
-
-<button onclick="connectCoinbase()">
-Coinbase
-</button>
-
-<button onclick="connectWalletConnect()">
-WalletConnect
-</button>
+<button onclick="connectPhantom()">Phantom</button>
 
 </div>
 
-</div>
+<div id="walletInfo"></div>
 
-<script src="app.js"></script>
+<script>
+
+let provider
+let signer
+
+async function connectMetaMask(){
+
+if(!window.ethereum){
+alert("MetaMask not installed")
+return
+}
+
+provider = new ethers.providers.Web3Provider(window.ethereum)
+
+await provider.send("eth_requestAccounts",[])
+
+signer = provider.getSigner()
+
+const address = await signer.getAddress()
+
+const balance = await provider.getBalance(address)
+
+const network = await provider.getNetwork()
+
+document.getElementById("walletInfo").innerHTML=
+
+`
+Address: ${address}<br>
+Balance: ${ethers.utils.formatEther(balance)} ETH<br>
+Network: ${network.name}
+`
+
+}
+
+async function connectCoinbase(){
+
+if(!window.ethereum){
+alert("Install Coinbase Wallet")
+return
+}
+
+provider = new ethers.providers.Web3Provider(window.ethereum)
+
+await provider.send("eth_requestAccounts",[])
+
+signer = provider.getSigner()
+
+const address = await signer.getAddress()
+
+document.getElementById("walletInfo").innerHTML=
+
+`
+Connected Coinbase Wallet<br>
+Address: ${address}
+`
+
+}
+
+async function connectPhantom(){
+
+const provider = window.solana
+
+if(!provider){
+alert("Install Phantom Wallet")
+return
+}
+
+if(provider.isPhantom){
+
+try{
+
+const resp = await provider.connect()
+
+const connection = new solanaWeb3.Connection(
+"https://api.mainnet-beta.solana.com"
+)
+
+const balance = await connection.getBalance(resp.publicKey)
+
+document.getElementById("walletInfo").innerHTML=
+
+`
+Phantom Connected<br>
+Address: ${resp.publicKey.toString()}<br>
+Balance: ${balance / solanaWeb3.LAMPORTS_PER_SOL} SOL
+`
+
+}catch(err){
+
+console.log(err)
+
+}
+
+}
+
+}
+
+</script>
 
 </body>
 </html>
