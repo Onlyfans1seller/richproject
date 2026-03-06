@@ -10,16 +10,11 @@
 
 <link rel="stylesheet" href="style.css">
 
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
-
-<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.0/dist/index.umd.js"></script>
-
-<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
-
 </head>
 
-
 <body>
+
+<div class="bg"></div>
 
 <header>
 
@@ -27,72 +22,23 @@
 ByCashVault
 </div>
 
-<button onclick="openWalletModal()" class="connect">
+<button id="connectBtn">
 Connect Wallet
 </button>
 
 </header>
 
-
 <section class="hero">
 
-<h1 class="title">
-Secure Web3 Access
-</h1>
+<h1>Secure Web3 Vault</h1>
 
-<p class="subtitle">
-Connect your wallet to continue
-</p>
-
-<p id="walletAddress"></p>
+<p>Connect your wallet to start</p>
 
 </section>
 
+<div id="wallet" class="wallet"></div>
 
-<div id="walletModal" class="modal">
-
-<div class="modalBox">
-
-<h2>Select Wallet</h2>
-
-<div class="walletGrid">
-
-<div class="wallet" onclick="connectMetaMask()">
-MetaMask
-</div>
-
-<div class="wallet" onclick="connectPhantom()">
-Phantom
-</div>
-
-<div class="wallet" onclick="connectTrust()">
-Trust Wallet
-</div>
-
-<div class="wallet" onclick="connectCoinbase()">
-Coinbase
-</div>
-
-<div class="wallet" onclick="connectOKX()">
-OKX
-</div>
-
-<div class="wallet" onclick="connectWalletConnect()">
-WalletConnect
-</div>
-
-</div>
-
-<button onclick="closeModal()" class="close">
-Close
-</button>
-
-</div>
-
-</div>
-
-
-<script src="wallets.js"></script>
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
