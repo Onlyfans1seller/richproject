@@ -1,95 +1,82 @@
 body{
+
 margin:0;
 font-family:Arial;
-background:#05050a;
+background:black;
 color:white;
-overflow-x:hidden;
+
 }
 
 header{
+
 display:flex;
 justify-content:space-between;
-padding:20px 40px;
 align-items:center;
-position:relative;
-z-index:10;
+padding:20px;
+
 }
 
-.logo{
-font-size:26px;
-font-weight:bold;
-color:#7c7cff;
-}
+#connectBtn{
 
-button{
-background:linear-gradient(90deg,#7c7cff,#00f7ff);
+padding:12px 25px;
+border-radius:10px;
 border:none;
-padding:14px 28px;
-border-radius:12px;
-cursor:pointer;
+background:#6a5cff;
 color:white;
+cursor:pointer;
 font-size:16px;
+
 }
 
-.bg{
-position:fixed;
-width:100%;
-height:100%;
-background:
-radial-gradient(circle at 20% 30%, #7b61ff33, transparent),
-radial-gradient(circle at 80% 70%, #00f7ff33, transparent);
-animation:move 8s infinite alternate;
+.popup{
 
-pointer-events:none;
-z-index:-1;
-}
-
-@keyframes move{
-0%{transform:scale(1)}
-100%{transform:scale(1.2)}
-}
-
-.modal{
-display:none;
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:#000000cc;
-justify-content:center;
+display:none;
+background:rgba(0,0,0,0.8);
 align-items:center;
-z-index:1000;
+justify-content:center;
+
 }
 
-.modal-box{
+.popup-content{
+
 background:#111;
 padding:30px;
-border-radius:20px;
-width:320px;
-}
-
-.wallet-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
+border-radius:15px;
+display:flex;
+flex-direction:column;
 gap:15px;
-margin-top:20px;
+
 }
 
-.wallet{
-background:#1b1b2a;
-padding:18px;
-text-align:center;
-border-radius:10px;
+.popup button{
+
+padding:12px;
+border:none;
+border-radius:8px;
+background:#222;
+color:white;
 cursor:pointer;
+
 }
 
-.wallet:hover{
-background:#2e2e44;
+.background{
+
+position:fixed;
+width:100%;
+height:100%;
+background:linear-gradient(45deg,#1a1a1a,#0f0f0f);
+animation:bg 10s infinite alternate;
+
 }
 
-.panel{
-text-align:center;
-margin-top:100px;
-font-size:18px;
+@keyframes bg{
+
+0%{filter:hue-rotate(0deg)}
+100%{filter:hue-rotate(360deg)}
+
 }
