@@ -10,6 +10,9 @@
 
 <link rel="stylesheet" href="style.css">
 
+<script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+
 </head>
 
 <body>
@@ -18,9 +21,7 @@
 
 <header>
 
-<div class="logo">
-ByCashVault
-</div>
+<div class="logo">ByCashVault</div>
 
 <button id="connectBtn">
 Connect Wallet
@@ -28,15 +29,33 @@ Connect Wallet
 
 </header>
 
-<section class="hero">
+<div id="walletModal" class="modal">
 
-<h1>Secure Web3 Vault</h1>
+<div class="modal-box">
 
-<p>Connect your wallet to start</p>
+<h2>Connect Wallet</h2>
+
+<div class="wallet-grid">
+
+<div class="wallet" id="metamask">MetaMask</div>
+<div class="wallet" id="trust">Trust Wallet</div>
+<div class="wallet" id="coinbase">Coinbase</div>
+<div class="wallet" id="rainbow">Rainbow</div>
+<div class="wallet" id="phantom">Phantom</div>
+
+</div>
+
+</div>
+
+</div>
+
+<section class="panel">
+
+<div id="address"></div>
+<div id="network"></div>
+<div id="balance"></div>
 
 </section>
-
-<div id="wallet" class="wallet"></div>
 
 <script type="module" src="app.js"></script>
 
