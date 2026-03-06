@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ByCashVault</title>
+<title>Rich Project dApp</title>
 
 <link rel="stylesheet" href="style.css">
 
-<script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
 
 </head>
 
 <body>
 
-<div class="bg"></div>
+<div class="background"></div>
 
 <header>
 
-<div class="logo">ByCashVault</div>
+<h1>Rich Project</h1>
 
 <button id="connectBtn">
 Connect Wallet
@@ -29,35 +27,37 @@ Connect Wallet
 
 </header>
 
-<div id="walletModal" class="modal">
+<div id="walletPopup" class="popup">
 
-<div class="modal-box">
+<div class="popup-content">
 
-<h2>Connect Wallet</h2>
+<h2>Select Wallet</h2>
 
-<div class="wallet-grid">
+<button onclick="connectMetaMask()">
+MetaMask
+</button>
 
-<div class="wallet" id="metamask">MetaMask</div>
-<div class="wallet" id="trust">Trust Wallet</div>
-<div class="wallet" id="coinbase">Coinbase</div>
-<div class="wallet" id="rainbow">Rainbow</div>
-<div class="wallet" id="phantom">Phantom</div>
+<button onclick="connectPhantom()">
+Phantom
+</button>
+
+<button onclick="connectTrust()">
+Trust Wallet
+</button>
+
+<button onclick="connectCoinbase()">
+Coinbase
+</button>
+
+<button onclick="connectWalletConnect()">
+WalletConnect
+</button>
 
 </div>
 
 </div>
 
-</div>
-
-<section class="panel">
-
-<div id="address"></div>
-<div id="network"></div>
-<div id="balance"></div>
-
-</section>
-
-<script type="module" src="app.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
