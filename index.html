@@ -1,214 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ByCashVault Web3 Test</title>
-
-<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
-<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+<title>Phantom Mobile Connect</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <style>
 
 body{
-margin:0;
-font-family:Arial;
-background:radial-gradient(circle at top,#1a0033,#000);
+background:#0e0e11;
 color:white;
-height:100vh;
+font-family:sans-serif;
 display:flex;
-flex-direction:column;
 align-items:center;
 justify-content:center;
+height:100vh;
 }
 
-h1{
-font-size:48px;
-background:linear-gradient(90deg,#8b5cf6,#22d3ee);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+.card{
+background:#1a1a1f;
+padding:40px;
+border-radius:16px;
+text-align:center;
+width:320px;
 }
 
 button{
-padding:14px 28px;
+padding:14px 22px;
 border:none;
-border-radius:12px;
-background:linear-gradient(90deg,#7c3aed,#22d3ee);
-color:white;
-font-size:18px;
+border-radius:10px;
+background:#8f7fff;
+color:black;
+font-weight:bold;
+font-size:16px;
 cursor:pointer;
 }
 
-button:hover{
-opacity:.9;
-}
-
-#walletModal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.8);
-display:none;
-justify-content:center;
-align-items:center;
-}
-
-.modalBox{
-background:#111;
-padding:30px;
-border-radius:16px;
-width:320px;
-text-align:center;
-}
-
-.walletBtn{
-margin:10px 0;
-width:100%;
-}
-
-#info{
-margin-top:30px;
-font-size:16px;
-text-align:center;
+#wallet{
+margin-top:20px;
+word-break:break-all;
+font-size:14px;
 }
 
 </style>
-
 </head>
+
 <body>
 
-<h1>ByCashVault</h1>
+<div class="card">
 
-<button onclick="openModal()">Connect Wallet</button>
+<h2>Connect Phantom</h2>
 
-<div id="info"></div>
+<button onclick="connectPhantom()">
+Open Phantom
+</button>
 
-<div id="walletModal">
-
-<div class="modalBox">
-
-<h2>Select Wallet</h2>
-
-<button class="walletBtn" onclick="connectMetaMask()">MetaMask</button>
-
-<button class="walletBtn" onclick="connectPhantom()">Phantom</button>
-
-<button class="walletBtn" onclick="closeModal()">Cancel</button>
-
-</div>
+<div id="wallet"></div>
 
 </div>
 
 <script>
 
-function openModal(){
-document.getElementById("walletModal").style.display="flex"
+const dappURL = window.location.origin + window.location.pathname
+
+function connectPhantom(){
+
+const link =
+`https://phantom.app/ul/browse/${encodeURIComponent(dappURL)}`
+
+window.location.href = link
+
 }
 
-function closeModal(){
-document.getElementById("walletModal").style.display="none"
-}
+function readWallet(){
 
-function showInfo(text){
-document.getElementById("info").innerHTML=text
-}
+const params = new URLSearchParams(window.location.search)
 
-async function connectMetaMask(){
+const pubkey = params.get("public_key")
 
-closeModal()
-
-if(!window.ethereum){
-alert("MetaMask not installed")
-return
-}
-
-try{
-
-const provider=new ethers.providers.Web3Provider(window.ethereum)
-
-await provider.send("eth_requestAccounts",[])
-
-const signer=provider.getSigner()
-
-const address=await signer.getAddress()
-
-const balance=await provider.getBalance(address)
-
-const eth=ethers.utils.formatEther(balance)
-
-showInfo(`
-Connected: MetaMask<br>
-Address: ${address}<br>
-Balance: ${parseFloat(eth).toFixed(4)} ETH
-`)
-
-}catch(err){
-
-console.log(err)
-
-alert("Connection failed")
-
+if(pubkey){
+document.getElementById("wallet").innerText =
+"Connected:\n" + pubkey
 }
 
 }
 
-async function connectPhantom(){
-
-closeModal()
-
-const provider=window.solana
-
-if(!provider){
-
-alert("Phantom not installed")
-
-return
-
-}
-
-if(!provider.isPhantom){
-
-alert("Phantom wallet not detected")
-
-return
-
-}
-
-try{
-
-const resp=await provider.connect()
-
-const address=resp.publicKey.toString()
-
-const connection=new solanaWeb3.Connection(
-"https://api.mainnet-beta.solana.com"
-)
-
-const balance=await connection.getBalance(
-new solanaWeb3.PublicKey(address)
-)
-
-const sol=(balance/1000000000).toFixed(4)
-
-showInfo(`
-Connected: Phantom<br>
-Address: ${address}<br>
-Balance: ${sol} SOL
-`)
-
-}catch(err){
-
-console.log(err)
-
-alert("Phantom connection failed")
-
-}
-
-}
+readWallet()
 
 </script>
 
