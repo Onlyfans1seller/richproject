@@ -4,11 +4,11 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>ByCashVault</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
 
@@ -16,253 +16,83 @@
 
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
 
-<style>
-
-body{
-background:radial-gradient(circle at top,#19003a,#050010);
-color:white;
-font-family:system-ui;
-overflow-x:hidden;
-}
-
-.logo{
-font-size:38px;
-font-weight:700;
-background:linear-gradient(90deg,#8b5cf6,#ec4899);
--webkit-background-clip:text;
-color:transparent;
-animation:glow 3s infinite alternate;
-}
-
-@keyframes glow{
-
-0%{text-shadow:0 0 10px #8b5cf6;}
-100%{text-shadow:0 0 40px #ec4899;}
-
-}
-
-.connectBtn{
-
-background:linear-gradient(90deg,#7c3aed,#ec4899);
-padding:14px 34px;
-border-radius:999px;
-font-weight:600;
-transition:0.3s;
-
-}
-
-.connectBtn:hover{
-
-transform:scale(1.1);
-box-shadow:0 0 25px #9333ea;
-
-}
-
-.modal{
-
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.85);
-display:none;
-align-items:center;
-justify-content:center;
-
-}
-
-.modalBox{
-
-background:rgba(25,0,60,0.9);
-backdrop-filter:blur(20px);
-padding:30px;
-border-radius:20px;
-width:92%;
-max-width:520px;
-border:1px solid #9333ea;
-
-animation:pop 0.4s ease;
-
-}
-
-@keyframes pop{
-
-from{transform:scale(.7);opacity:0}
-to{transform:scale(1);opacity:1}
-
-}
-
-.wallet{
-
-background:rgba(255,255,255,0.04);
-border:1px solid rgba(168,85,247,0.3);
-padding:16px;
-border-radius:14px;
-text-align:center;
-cursor:pointer;
-transition:0.25s;
-
-}
-
-.wallet:hover{
-
-transform:scale(1.08);
-box-shadow:0 0 20px #9333ea;
-
-}
-
-</style>
-
 </head>
+
 
 <body>
 
-
-<header class="flex justify-between p-6 items-center">
+<header>
 
 <div class="logo">
 ByCashVault
 </div>
 
-<button onclick="openModal()" class="connectBtn">
+<button onclick="openWalletModal()" class="connect">
 Connect Wallet
 </button>
 
 </header>
 
 
-<section class="text-center mt-32">
+<section class="hero">
 
-<h1 class="text-6xl font-bold mb-6">
-Web3 Portal
+<h1 class="title">
+Secure Web3 Access
 </h1>
 
-<p class="text-purple-300 text-xl">
-Secure wallet connection
+<p class="subtitle">
+Connect your wallet to continue
 </p>
 
-<p id="address" class="mt-10"></p>
+<p id="walletAddress"></p>
 
 </section>
 
 
-<div id="modal" class="modal">
+<div id="walletModal" class="modal">
 
 <div class="modalBox">
 
-<h2 class="text-xl mb-6 text-center">
-Select Wallet
-</h2>
+<h2>Select Wallet</h2>
 
-<div class="grid grid-cols-3 gap-3">
+<div class="walletGrid">
 
-<div class="wallet" onclick="connectMetaMask()">MetaMask</div>
+<div class="wallet" onclick="connectMetaMask()">
+MetaMask
+</div>
 
-<div class="wallet" onclick="connectWC()">Trust</div>
+<div class="wallet" onclick="connectPhantom()">
+Phantom
+</div>
 
-<div class="wallet" onclick="connectWC()">Coinbase</div>
+<div class="wallet" onclick="connectTrust()">
+Trust Wallet
+</div>
 
-<div class="wallet" onclick="connectWC()">OKX</div>
+<div class="wallet" onclick="connectCoinbase()">
+Coinbase
+</div>
 
-<div class="wallet" onclick="connectWC()">Binance</div>
+<div class="wallet" onclick="connectOKX()">
+OKX
+</div>
 
-<div class="wallet" onclick="connectWC()">Rabby</div>
+<div class="wallet" onclick="connectWalletConnect()">
+WalletConnect
+</div>
 
-<div class="wallet" onclick="connectWC()">Rainbow</div>
+</div>
 
-<div class="wallet" onclick="connectWC()">Ledger</div>
-
-<div class="wallet" onclick="connectPhantom()">Phantom</div>
+<button onclick="closeModal()" class="close">
+Close
+</button>
 
 </div>
 
 </div>
 
-</div>
 
-
-<script>
-
-const PROJECT_ID="a4746ac803fafe7cecb476f789b0230d"
-
-
-
-function openModal(){
-document.getElementById("modal").style.display="flex"
-}
-
-
-
-async function connectMetaMask(){
-
-if(!window.ethereum){
-
-window.location.href=
-"https://metamask.app.link/dapp/"+window.location.host
-
-return
-}
-
-const provider=new ethers.BrowserProvider(window.ethereum)
-
-await provider.send("eth_requestAccounts",[])
-
-const signer=await provider.getSigner()
-
-const address=await signer.getAddress()
-
-document.getElementById("address").innerText="Connected: "+address
-
-}
-
-
-
-async function connectWC(){
-
-const provider=
-await window.EthereumProvider.init({
-
-projectId:PROJECT_ID,
-
-chains:[1],
-
-showQrModal:true
-
-})
-
-await provider.enable()
-
-const ethersProvider=new ethers.BrowserProvider(provider)
-
-const signer=await ethersProvider.getSigner()
-
-const address=await signer.getAddress()
-
-document.getElementById("address").innerText="Connected: "+address
-
-}
-
-
-
-async function connectPhantom(){
-
-const provider=window.phantom?.solana
-
-if(!provider){
-
-window.location.href=
-"https://phantom.app/ul/browse/"+window.location.host
-
-return
-}
-
-const resp=await provider.connect()
-
-document.getElementById("address").innerText=
-"Connected: "+resp.publicKey.toString()
-
-}
-
-</script>
+<script src="wallets.js"></script>
 
 </body>
-
 </html>
